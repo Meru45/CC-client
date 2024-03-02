@@ -31,7 +31,7 @@ const SignupPage = () => {
                 "http://localhost:4000/auth/singup",
                 userData
             );
-            if (response) {
+            if (response.status === 201) {
                 navigate("/login");
             }
         } catch (error) {

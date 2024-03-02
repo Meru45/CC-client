@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import useNavigation from "../hooks/use-navigation";
 
 const Login = ({ loginData }) => {
     const [credentials, setCredentials] = useState({
@@ -8,9 +7,11 @@ const Login = ({ loginData }) => {
         password: "",
     });
 
+    const [message, setMessage] = useState("");
+
     const [accessToken, setAccessToken] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+    const [userInfo, setUserInfo] = useState({});
     const handleChange = (e) => {
         const { name, value } = e.target;
         setCredentials((prevCredentials) => ({
@@ -25,14 +26,18 @@ const Login = ({ loginData }) => {
                 "http://localhost:4000/auth/login", //change this in production
                 credentials
             );
+            console.log(response);
 
             if (response.status === 200) {
                 const data = response.data;
                 await setAccessToken(data.accessToken);
                 await setIsLoggedIn(data.userLoggedIn);
-                loginData(accessToken, isLoggedIn);
+                await setUserInfo(data.userInfo);
+                loginData(accessToken, isLoggedIn, userInfo);
             } else {
                 console.error("Login failed");
+                setMessage("No matching user id or password");
+                setCredentials({ userId: "", password: "" });
             }
         } catch (error) {
             console.error("Error during login:", error);
@@ -51,12 +56,13 @@ const Login = ({ loginData }) => {
                         User ID or Email
                     </label>
                     <input
-                        type="text"
+                        type="email"
                         id="userId"
                         name="userId"
                         value={credentials.userId}
                         onChange={handleChange}
                         className="mt-1 p-2 w-full border rounded-md"
+                        required
                     />
                 </div>
                 <div className="mb-4">
@@ -73,8 +79,10 @@ const Login = ({ loginData }) => {
                         value={credentials.password}
                         onChange={handleChange}
                         className="mt-1 p-2 w-full border rounded-md"
+                        required
                     />
                 </div>
+                {message && <div>{message}</div>}
                 <button
                     onClick={handleLogin}
                     className="bg-blue-500 text-white p-2 rounded-md"
