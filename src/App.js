@@ -4,9 +4,11 @@ import SideBar from "./components/SideBar";
 import HomePage from "./pages/HomePage";
 import RecordsPage from "./pages/Records";
 import Dashboard from "./pages/Dashboard";
+import SignupPage from "./pages/singup";
+import Login from "./pages/Login";
 
 const App = () => {
-    const [loggedIn, setLoggedIn] = useState(true);
+    const [loggedIn, setLoggedIn] = useState(false);
     return (
         <div>
             {loggedIn ? (
@@ -22,7 +24,17 @@ const App = () => {
                     </div>
                 </div>
             ) : (
-                <HomePage />
+                <div>
+                    <Route path="/">
+                        <HomePage />
+                    </Route>
+                    <Route path="/singup">
+                        <SignupPage />
+                    </Route>
+                    <Route path="/login">
+                        <Login />
+                    </Route>
+                </div>
             )}
         </div>
     );
