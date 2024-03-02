@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
+import Route from "./components/Route";
+import SideBar from "./components/SideBar";
+import HomePage from "./pages/HomePage";
+import RecordsPage from "./pages/Records";
 
 const App = () => {
+    const [loggedIn, setLoggedIn] = useState(true);
     return (
         <div>
-            <h1>Sanjana Gupta</h1>
+            {loggedIn ? (
+                <div className="container mx-auto grid grid-cols-6 gap-4 mt-4">
+                    <SideBar />{" "}
+                    <div className="col-span-5">
+                        <Route path="/records">
+                            <RecordsPage />
+                        </Route>
+                    </div>
+                </div>
+            ) : (
+                <HomePage />
+            )}
         </div>
     );
 };
