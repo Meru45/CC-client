@@ -8,7 +8,14 @@ import SignupPage from "./pages/singup";
 import Login from "./pages/Login";
 
 const App = () => {
+    const [accessToken, setAccessToken] = useState("");
     const [loggedIn, setLoggedIn] = useState(false);
+
+    const loginData = (accessToken, loggedIn) => {
+        setAccessToken(accessToken);
+        setLoggedIn(loggedIn);
+    };
+
     return (
         <div>
             {loggedIn ? (
@@ -32,7 +39,7 @@ const App = () => {
                         <SignupPage />
                     </Route>
                     <Route path="/login">
-                        <Login />
+                        <Login loginData={loginData} />
                     </Route>
                 </div>
             )}
