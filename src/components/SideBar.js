@@ -23,6 +23,10 @@ const SideBar = () => {
             label: "Records",
             path: "/records",
         },
+        {
+            label: "Dashboard",
+            path: "/dashboard",
+        },
     ];
 
     const renderedLinks = links.map((link) => {

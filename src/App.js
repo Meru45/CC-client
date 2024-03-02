@@ -3,6 +3,7 @@ import Route from "./components/Route";
 import SideBar from "./components/SideBar";
 import HomePage from "./pages/HomePage";
 import RecordsPage from "./pages/Records";
+import Dashboard from "./pages/Dashboard";
 
 const App = () => {
     const [loggedIn, setLoggedIn] = useState(true);
@@ -14,6 +15,9 @@ const App = () => {
                     <div className="col-span-5">
                         <Route path="/records">
                             <RecordsPage />
+                        </Route>
+                        <Route path="/dashboard">
+                            <Dashboard />
                         </Route>
                     </div>
                 </div>
