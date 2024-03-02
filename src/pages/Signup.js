@@ -27,8 +27,9 @@ const SignupPage = () => {
             userPassword: password,
         };
         try {
+            console.log(userData);
             const response = await axios.post(
-                "http://localhost:4000/auth/singup",
+                "http://doctorai.greatrsingh.in/auth/login",
                 userData
             );
             if (response.status === 201) {
