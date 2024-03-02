@@ -29,7 +29,7 @@ const SignupPage = () => {
         try {
             console.log(userData);
             const response = await axios.post(
-                "http://doctorai.greatrsingh.in/auth/login",
+                "https://doctorai.greatrsingh.in/auth/login",
                 userData
             );
             if (response.status === 201) {
