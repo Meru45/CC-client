@@ -22,7 +22,8 @@ const App = () => {
         <div>
             {loggedIn ? (
                 <div className="container mx-auto grid grid-cols-6 gap-4 mt-4">
-                    <SideBar /> <div>{userInfo.userName}</div>
+                    <SideBar />
+                    <div>User Name: {userInfo.userName}</div>
                     <div className="col-span-5">
                         <Route path="/records">
                             <RecordsPage />

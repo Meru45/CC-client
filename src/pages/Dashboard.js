@@ -6,7 +6,7 @@ const Dashboard = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [age, setAge] = useState("");
-    const [selectedFile, setSelectedFile] = useState({});
+    const [selectedFile, setSelectedFile] = useState("");
     const [previewImage, setPreviewImage] = useState(null);
 
     const handleFirstNameChange = (event) => {
@@ -23,7 +23,7 @@ const Dashboard = () => {
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
-        setSelectedFile(file);
+        // setSelectedFile(file);
         if (file) {
             const reader = new FileReader();
             reader.onload = (e) => setPreviewImage(e.target.result);
@@ -31,22 +31,24 @@ const Dashboard = () => {
         } else {
             setPreviewImage(null);
         }
+        let reader = new FileReader();
+        reader.readAsDataURL(event.target.files[0]);
+        reader.onload = (e) => {
+            setSelectedFile(reader.result);
+        };
+        reader.onerror = (error) => {
+            console.log("Error:", error);
+        };
     };
 
     const handleSubmit = async (event) => {
-        const apiUrl = "https://pika.greatrsingh.in/wbc";
-        let formData = new FormData();
-        formData.append("image", selectedFile);
-        console.log(formData.get("image"));
+        const apiUrl = "https://pika.greatrsingh.in/upload";
+        // let formData = new FormData();
+        // formData.append("image", selectedFile);
+        // console.log(formData.get("image"));
 
         try {
-            const response = await axios.post(apiUrl, formData, {
-                headers: {
-                    accept: "application/json",
-                    "Accept-Language": "en-US,en;q=0.8",
-                    "Content-Type": `multipart/form-data;`,
-                },
-            });
+            const response = await axios.post(apiUrl, selectedFile);
             console.log(response.data); // Handle the response data as needed
         } catch (error) {
             console.error("Error uploading file:", error);
@@ -57,6 +59,7 @@ const Dashboard = () => {
         // setAge("");
         // setSelectedFile(null);
         // setPreviewImage(null);
+        console.log(selectedFile);
         event.preventDefault();
     };
 
@@ -114,6 +117,7 @@ const Dashboard = () => {
                     </label>
                     <input
                         id="image"
+                        accept="image/*"
                         type="file"
                         className="p-2"
                         onChange={handleFileChange}
@@ -123,7 +127,7 @@ const Dashboard = () => {
                         <img
                             src={previewImage}
                             alt="Image preview"
-                            className="w-30 h-30 object-cover square-full mt-2"
+                            className="w-48 h-48 object-cover square mt-2"
                         />
                     )}
                 </div>
@@ -132,6 +136,9 @@ const Dashboard = () => {
                     className="bg-blue-500 hover:bg-blue-700 text-white rounded-md p-2 font-medium"
                 >
                     Submit
+                </button>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white rounded-md p-2 font-medium">
+                    Export
                 </button>
             </form>
         </div>

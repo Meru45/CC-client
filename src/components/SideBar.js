@@ -4,26 +4,6 @@ import Link from "./Link";
 const SideBar = () => {
     const links = [
         {
-            label: "Dropdown",
-            path: "/",
-        },
-        {
-            label: "Accordion",
-            path: "/accordion",
-        },
-        {
-            label: "Buttons",
-            path: "/buttons",
-        },
-        {
-            label: "Modal",
-            path: "/modal",
-        },
-        {
-            label: "Records",
-            path: "/records",
-        },
-        {
             label: "Dashboard",
             path: "/dashboard",
         },
