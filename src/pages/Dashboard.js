@@ -37,11 +37,16 @@ const Dashboard = () => {
         const apiUrl = "https://pika.greatrsingh.in/wbc";
         let formData = new FormData();
         formData.append("image", selectedFile);
-        formData.append("Mayur", "Hello");
         console.log(formData.get("image"));
 
         try {
-            const response = await axios.post(apiUrl, formData.get("image"));
+            const response = await axios.post(apiUrl, formData, {
+                headers: {
+                    accept: "application/json",
+                    "Accept-Language": "en-US,en;q=0.8",
+                    "Content-Type": `multipart/form-data;`,
+                },
+            });
             console.log(response.data); // Handle the response data as needed
         } catch (error) {
             console.error("Error uploading file:", error);
