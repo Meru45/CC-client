@@ -32,26 +32,25 @@ const Dashboard = () => {
         }
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
+        const apiUrl = "https://pika.greatrsingh.in/wbc";
+
         // form submission logic here
         const formData = new FormData();
-        formData.append("img", selectedFile.pictureAsFile);
+        formData.append("img", selectedFile);
 
-        for (let key of formData.entries()) {
-            console.log(key[0] + ", " + key[1]);
-        }
-
-        axios
-            .post("https://pika.greatrsingh.in/wbc", formData, {
-                accept: "application/json",
-                "Content-Type": "multipart/form-data",
-            })
-            .then((response) => {
-                console.log("Response:", response.data);
-            })
-            .catch((error) => {
-                console.error("Error:", error);
+        try {
+            const response = await axios.post(apiUrl, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    accept: "application/json",
+                },
             });
+
+            console.log(response.data); // Handle the response data as needed
+        } catch (error) {
+            console.error("Error uploading file:", error);
+        }
 
         console.log(formData);
         // Clear the form after successful submission
