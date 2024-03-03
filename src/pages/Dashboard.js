@@ -35,27 +35,17 @@ const Dashboard = () => {
 
     const handleSubmit = async (event) => {
         const apiUrl = "https://pika.greatrsingh.in/wbc";
-
-        // form submission logic here
-        const formData = new FormData();
-        formData.append("img", selectedFile, selectedFile.name);
+        let formData = new FormData();
+        formData.append("image", selectedFile);
+        formData.append("Mayur", "Hello");
+        console.log(formData.get("image"));
 
         try {
-            console.log(formData);
-            const response = await axios.post(apiUrl, formData, {
-                headers: {
-                    accept: "application/json",
-                    "Accept-Language": "en-US,en;q=0.8",
-                    "Content-Type": `multipart/form-data; boundary=${formData._boundary}`,
-                },
-            });
-
+            const response = await axios.post(apiUrl, formData.get("image"));
             console.log(response.data); // Handle the response data as needed
         } catch (error) {
             console.error("Error uploading file:", error);
         }
-
-        console.log(formData);
         // Clear the form after successful submission
         // setFirstName("");
         // setLastName("");
