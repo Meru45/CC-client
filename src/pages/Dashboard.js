@@ -40,6 +40,7 @@ const Dashboard = () => {
         formData.append("img", selectedFile);
 
         try {
+            console.log(formData);
             const response = await axios.post(apiUrl, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
