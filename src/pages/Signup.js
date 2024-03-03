@@ -4,6 +4,12 @@ import axios from "axios";
 import useNavigation from "../hooks/use-navigation";
 
 const SignupPage = () => {
+    const [credentials, setCredentials] = useState({
+        userName: "",
+        userId: "",
+        userEmail: "",
+        userPassword: "",
+    });
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -20,17 +26,16 @@ const SignupPage = () => {
             alert("Passwords do not match");
             return;
         }
-        const userData = {
-            userName: fullName,
-            userId: email,
-            userEmail: email,
-            userPassword: password,
-        };
+        const { name, value } = e.target;
+        setCredentials((prevCredentials) => ({
+            ...prevCredentials,
+            [name]: value,
+        }));
         try {
-            console.log(userData);
+            console.log(credentials);
             const response = await axios.post(
                 "https://doctorai.greatrsingh.in/auth/login",
-                userData
+                credentials
             );
             if (response.status === 201) {
                 navigate("/login");

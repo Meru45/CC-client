@@ -23,7 +23,7 @@ const Login = ({ loginData }) => {
     const handleLogin = async () => {
         try {
             const response = await axios.post(
-                "https://doctorai.greatrsingh.in/auth/login", //change this in production
+                "https://doctorai.greatrsingh.in/auth/login",
                 credentials
             );
             console.log(response);
