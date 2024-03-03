@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import FormData from "form-data";
 
 const Dashboard = () => {
     const [firstName, setFirstName] = useState("");
@@ -37,14 +38,15 @@ const Dashboard = () => {
 
         // form submission logic here
         const formData = new FormData();
-        formData.append("img", selectedFile);
+        formData.append("img", selectedFile, selectedFile.name);
 
         try {
             console.log(formData);
             const response = await axios.post(apiUrl, formData, {
                 headers: {
-                    "Content-Type": "multipart/form-data",
                     accept: "application/json",
+                    "Accept-Language": "en-US,en;q=0.8",
+                    "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
                 },
             });
 
