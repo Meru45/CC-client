@@ -1,161 +1,134 @@
-// Import necessary libraries
 import React, { useState } from "react";
 import axios from "axios";
-import useNavigation from "../hooks/use-navigation";
 
-const SignupPage = () => {
-    const [credentials, setCredentials] = useState({
-        userName: "",
-        userId: "",
+const Signup = () => {
+    const [userData, setUserData] = useState({
+        userID: "",
         userEmail: "",
+        userName: "",
         userPassword: "",
     });
-    const [fullName, setFullName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [passwordVisibility, setPasswordVisibility] = useState(false);
-    const [confirmPasswordVisibility, setConfirmPasswordVisibility] =
-        useState(false);
 
-    const { navigate } = useNavigation();
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const [showPassword, setShowPassword] = useState(false);
 
-        if (password !== confirmPassword) {
-            alert("Passwords do not match");
-            return;
-        }
+    const handleChange = (e) => {
         const { name, value } = e.target;
-        setCredentials((prevCredentials) => ({
-            ...prevCredentials,
+
+        setUserData((prevData) => ({
+            ...prevData,
             [name]: value,
         }));
-        try {
-            console.log(credentials);
-            const response = await axios.post(
-                "https://doctorai.greatrsingh.in/auth/login",
-                credentials
-            );
-            if (response.status === 201) {
-                navigate("/login");
-            }
-        } catch (error) {
-            console.error("Error signing up:", error);
+
+        // Automatically set userID to userEmail when userEmail changes
+        if (name === "userEmail") {
+            setUserData((prevData) => ({
+                ...prevData,
+                userID: value,
+            }));
         }
     };
 
-    const togglePasswordVisibility = (field) => {
-        if (field === "password") {
-            setPasswordVisibility(!passwordVisibility);
-        } else if (field === "confirmPassword") {
-            setConfirmPasswordVisibility(!confirmPasswordVisibility);
+    const handleTogglePassword = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            // Make POST request using Axios
+            console.log(userData);
+            const response = await axios.post(
+                "http://localhost:4000/auth/singup",
+                {
+                    headers: { "Content-Type": "application/json" },
+                },
+                JSON.stringify({
+                    userID: userData.userID,
+                    userEmail: userData.userEmail,
+                    userName: userData.userName,
+                    userPassword: userData.userPassword,
+                })
+            );
+
+            // Handle successful response (you can customize this based on your API)
+            console.log(response.data);
+        } catch (error) {
+            // Handle error (you can customize this based on your API)
+            console.error("Error during signup:", error);
         }
     };
 
     return (
-        <div className="container mx-auto mt-8">
-            <form className="max-w-md mx-auto bg-white p-8 border shadow-lg rounded-md">
+        <div className="max-w-md mx-auto mt-8 p-6 bg-white shadow-md rounded-md">
+            <h2 className="text-2xl font-bold mb-4">Signup</h2>
+            <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label
-                        htmlFor="fullName"
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="userEmail"
+                        className="block text-sm font-medium text-gray-600"
                     >
-                        Full Name
-                    </label>
-                    <input
-                        type="text"
-                        id="fullName"
-                        name="fullName"
-                        className="w-full p-2 border rounded"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <label
-                        htmlFor="email"
-                        className="block text-gray-700 text-sm font-bold mb-2"
-                    >
-                        Email
+                        User Email:
                     </label>
                     <input
                         type="email"
-                        id="email"
-                        name="email"
-                        className="w-full p-2 border rounded"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        id="userEmail"
+                        name="userEmail"
+                        value={userData.userEmail}
+                        onChange={handleChange}
+                        className="mt-1 p-2 border rounded-md w-full"
                         required
                     />
                 </div>
 
-                <div className="mb-4 relative">
+                <div className="mb-4">
                     <label
-                        htmlFor="password"
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="userName"
+                        className="block text-sm font-medium text-gray-600"
                     >
-                        Password
+                        User Name:
                     </label>
                     <input
-                        type={passwordVisibility ? "text" : "password"}
-                        id="password"
-                        name="password"
-                        className="w-full p-2 border rounded"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        type="text"
+                        id="userName"
+                        name="userName"
+                        value={userData.userName}
+                        onChange={handleChange}
+                        className="mt-1 p-2 border rounded-md w-full"
                         required
                     />
-                    <button
-                        type="button"
-                        onClick={() => togglePasswordVisibility("password")}
-                        className="absolute right-2 top-2 text-gray-600"
-                    >
-                        {passwordVisibility ? (
-                            <i className="far fa-eye"></i>
-                        ) : (
-                            <i className="far fa-eye-slash"></i>
-                        )}
-                    </button>
                 </div>
 
-                <div className="mb-4 relative">
+                <div className="mb-4">
                     <label
-                        htmlFor="confirmPassword"
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="userPassword"
+                        className="block text-sm font-medium text-gray-600"
                     >
-                        Confirm Password
+                        Password:
                     </label>
-                    <input
-                        type={confirmPasswordVisibility ? "text" : "password"}
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        className="w-full p-2 border rounded"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                    />
-                    <button
-                        type="button"
-                        onClick={() =>
-                            togglePasswordVisibility("confirmPassword")
-                        }
-                        className="absolute right-2 top-2 text-gray-600"
-                    >
-                        {confirmPasswordVisibility ? (
-                            <i className="far fa-eye"></i>
-                        ) : (
-                            <i className="far fa-eye-slash"></i>
-                        )}
-                    </button>
+                    <div className="relative">
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            id="userPassword"
+                            name="userPassword"
+                            value={userData.userPassword}
+                            onChange={handleChange}
+                            className="mt-1 p-2 border rounded-md w-full"
+                            required
+                        />
+                        <button
+                            type="button"
+                            onClick={handleTogglePassword}
+                            className="absolute top-1/2 right-2 transform -translate-y-1/2"
+                        >
+                            {showPassword ? "👁️" : "👁️‍🗨️"}
+                        </button>
+                    </div>
                 </div>
 
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-                    onClick={handleSubmit}
+                    className="bg-blue-500 text-white py-2 px-4 rounded-md"
                 >
                     Sign Up
                 </button>
@@ -164,4 +137,4 @@ const SignupPage = () => {
     );
 };
 
-export default SignupPage;
+export default Signup;
