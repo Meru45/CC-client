@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const Dashboard = () => {
     const [firstName, setFirstName] = useState("");
@@ -39,6 +40,18 @@ const Dashboard = () => {
         for (let key of formData.entries()) {
             console.log(key[0] + ", " + key[1]);
         }
+
+        axios
+            .post("https://pika.greatrsingh.in/wbc", formData, {
+                accept: "application/json",
+                "Content-Type": "multipart/form-data",
+            })
+            .then((response) => {
+                console.log("Response:", response.data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
 
         console.log(formData);
         // Clear the form after successful submission
